@@ -1,6 +1,7 @@
 require 'dashing'
 require 'dotenv'
 require 'haml'
+require 'json'
 
 Dotenv.load
 

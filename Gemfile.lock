@@ -91,4 +91,5 @@ DEPENDENCIES
   dashing
   dotenv
   haml
+  json
   twitter (>= 5.9.0)
