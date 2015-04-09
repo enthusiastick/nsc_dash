@@ -33,6 +33,10 @@ GEM
       http_parser.rb (~> 0.6.0)
     http_parser.rb (0.6.0)
     json (1.8.2)
+    koala (2.0.0)
+      addressable
+      faraday
+      multi_json
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     multi_json (1.11.0)
@@ -92,4 +96,5 @@ DEPENDENCIES
   dotenv
   haml
   json
+  koala
   twitter (>= 5.9.0)

@@ -1,0 +1,14 @@
+-content_for :title do
+  MaidPro Home Office Dashboard
+.gridster
+  %ul
+    %li{"data-col" => "1", "data-row" => "1", "data-sizex" => "4", "data-sizey" => "1"}
+      %div{style: "background-image: url('assets/maidpro.png'); background-position: center; min-height: 360px;"}
+    %li{"data-col" => "1", "data-row" => "2", "data-sizex" => "2", "data-sizey" => "1"}
+      %div{"data-id" => "facebook_posts", "data-title" => "Facebook Info", "data-view" => "FacebookPosts"}
+    %li{"data-col" => "3", "data-row" => "2", "data-sizex" => "2", "data-sizey" => "1"}
+      %div{"data-id" => "clock", "data-view" => "Clock"}
+    %li{"data-col" => "1", "data-row" => "3", "data-sizex" => "2", "data-sizey" => "1"}
+      %div{"data-id" => "twitter_mentions", "data-view" => "Comments"}
+    %li{"data-col" => "3", "data-row" => "3", "data-sizex" => "2", "data-sizey" => "1"}
+      %div{"data-id" => "klimato", "data-view" => "Klimato"}
