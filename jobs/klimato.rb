@@ -3,12 +3,12 @@ require "json"
 
 # WOEID for location:
 # http://woeid.rosselliot.co.nz
-woeid  = 2496012
+woeid  = 2367105
 
 # Units for temperature:
 # f: Fahrenheit
 # c: Celsius
-format = "c"
+format = "f"
 
 query  = URI::encode "select * from weather.forecast WHERE woeid=#{woeid} and u='#{format}'&format=json"
 
