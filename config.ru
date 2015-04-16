@@ -2,7 +2,7 @@ require 'dashing'
 require 'dotenv'
 require 'haml'
 require 'json'
-require 'koala'
+require 'pry'
 
 Dotenv.load
 
