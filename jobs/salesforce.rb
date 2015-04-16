@@ -40,13 +40,27 @@ SCHEDULER.every '1m', :first_in => 0 do
   closing_percentages = Hash.new
 
   estimates_hash.each do |rep, numbers|
-    closing_percentages[rep] = { label: rep, value: "#{(numbers[1]/numbers[0].round(2)*100).to_i}%" }
+    unless numbers[1] == 0
+      percentage = (numbers[1]/numbers[0].round(2)*100).to_i
+      unless percentage < 10
+        unless percentage == 100
+          closing_percentages[rep] = { label: rep, value: "#{percentage}%" }
+        end
+      end
+    end
   end
 
   closing_percentages_recurring = Hash.new
 
   estimates_hash.each do |rep, numbers|
-    closing_percentages_recurring[rep] = { label: rep, value: "#{(numbers[2]/numbers[0].round(2)*100).to_i}%" }
+    unless numbers[2] == 0
+      percentage_recurring = (numbers[2]/numbers[0].round(2)*100).to_i
+      unless percentage_recurring < 10
+        unless percentage_recurring == 100
+          closing_percentages_recurring[rep] = { label: rep, value: "#{percentage_recurring}%" }
+        end
+      end
+    end
   end
 
   send_event('closing', { items: closing_percentages.values })
