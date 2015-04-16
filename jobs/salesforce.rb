@@ -13,6 +13,8 @@ SCHEDULER.every '1m', :first_in => 0 do
 
   estimates = client.query("select Created_By_Name__c, Is_Closed_Won__c, Is_Closed_Won_Recurring__c from Estimate__c where Sales_Center_Billable__c = true and Managed_By__c = 'Sales Center' and CreatedDate = THIS_MONTH")
 
+  closings_recurring = client.query("select Id from Estimate__c where Sales_Center_Billable__c = true and Managed_By__c = 'Sales Center' and Is_Closed_Won_Recurring__c = 1 and CreatedDate = THIS_MONTH")
+
   estimates_hash = Hash.new
 
   estimates.each do |estimate|
@@ -49,5 +51,6 @@ SCHEDULER.every '1m', :first_in => 0 do
 
   send_event('closing', { items: closing_percentages.values })
   send_event('closing_recurring', { items: closing_percentages_recurring.values })
+  send_event('closing_recurring_total', { current: closings_recurring.count })
 
 end
