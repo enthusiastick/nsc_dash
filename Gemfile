@@ -6,6 +6,8 @@ gem 'faye'
 gem 'haml'
 gem 'json'
 gem 'koala'
+gem 'omniauth-google-oauth2'
+
 gem 'pry'
 gem 'restforce'
 
