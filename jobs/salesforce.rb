@@ -44,7 +44,7 @@ SCHEDULER.every '1m', :first_in => 0 do
       percentage = (numbers[1]/numbers[0].round(2)*100).to_i
       unless percentage < 10
         unless percentage == 100
-          closing_percentages[rep] = { label: rep, value: "#{percentage}%" }
+          closing_percentages[rep] = { label: "#{rep} (#{numbers[0]})", value: "#{percentage}%" }
         end
       end
     end
@@ -57,7 +57,7 @@ SCHEDULER.every '1m', :first_in => 0 do
       percentage_recurring = (numbers[2]/numbers[0].round(2)*100).to_i
       unless percentage_recurring < 10
         unless percentage_recurring == 100
-          closing_percentages_recurring[rep] = { label: rep, value: "#{percentage_recurring}%" }
+          closing_percentages_recurring[rep] = { label: "#{rep} (#{numbers[2]})", value: "#{percentage_recurring}%" }
         end
       end
     end
