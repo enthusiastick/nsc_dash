@@ -1,6 +1,6 @@
 :javascript
   $(function() {
-    Dashing.widget_base_dimensions = [370, 340]
+    Dashing.widget_base_dimensions = [425, 340]
   });
 -content_for :title do
   MaidPro NSC
@@ -12,7 +12,11 @@
       %div{"data-id" => "closing", "data-title" => "Closing %", "data-unordered" => "true", "data-view" => "List"}
     %li{"data-col" => "2", "data-row" => "2", "data-sizex" => "1", "data-sizey" => "2"}
       %div{"data-id" => "closing_recurring", "data-title" => "Closing % Recurring", "data-unordered" => "true", "data-view" => "List", style: "background-color: #d33682;"}
-    %li{"data-col" => "3", "data-row" => "2", "data-sizex" => "2", "data-sizey" => "2"}
+    %li{"data-col" => "3", "data-row" => "2", "data-sizex" => "2", "data-sizey" => "1"}
       %div{"data-id" => "closing_recurring_total", "data-title" => "Total Recurring Clients This Month", "data-view" => "Number"}
+    %li{"data-col" => "3", "data-row" => "3", "data-sizex" => "1", "data-sizey" => "1"}
+      %div{"data-id" => "clock", "data-view" => "Clock", style: "background-color: #b58900;"}
+    %li{"data-col" => "4", "data-row" => "3", "data-sizex" => "1", "data-sizey" => "1"}
+      %div{"data-id" => "klimato", "data-view" => "Klimato"}
 %div{"data-id" => "reload", "data-title" => "Reload", "data-view" => "Reload", :style => "display: none"}
 
