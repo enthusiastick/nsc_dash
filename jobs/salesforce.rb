@@ -15,6 +15,14 @@ SCHEDULER.every '1m', :first_in => 0 do
 
   closings_recurring = client.query("select Id from Estimate__c where Sales_Center_Billable__c = true and Managed_By__c = 'Sales Center' and Is_Closed_Won_Recurring__c = 1 and CreatedDate = THIS_MONTH")
 
+  users_objects = client.query("select Name from User where Profile.name = 'Portal Sales Center User'")
+
+  users = Array.new
+
+  users_objects.each do |user_object|
+    users << user_object.Name
+  end
+
   estimates_hash = Hash.new
 
   estimates.each do |estimate|
@@ -44,7 +52,7 @@ SCHEDULER.every '1m', :first_in => 0 do
       percentage = (numbers[1]/numbers[0].round(2)*100).to_i
       unless percentage < 10
         unless percentage == 100
-          unless numbers[0] < 3
+          if users.include?(rep)
             closing_percentages[rep] = { label: "#{rep} (#{numbers[1]}/#{numbers[0]})", value: "#{percentage}%" }
           end
         end
@@ -59,7 +67,7 @@ SCHEDULER.every '1m', :first_in => 0 do
       percentage_recurring = (numbers[2]/numbers[0].round(2)*100).to_i
       unless percentage_recurring < 10
         unless percentage_recurring == 100
-          unless numbers[0] < 3
+          if users.include?(rep)
             closing_percentages_recurring[rep] = { label: "#{rep} (#{numbers[2]}/#{numbers[0]})", value: "#{percentage_recurring}%" }
           end
         end
