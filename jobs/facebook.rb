@@ -6,7 +6,7 @@ def facebook_posts(page_name)
 end
 
 def graph_client(token, secret)
-  Koala::Facebook::API.new(token, secret)
+  Koala::Facebook::API.new(ENV['FACEBOOK_OAUTH_TOKEN'], ENV['FACEBOOK_APP_SECRET'])
 end
 
 def formatted_posts(posts)
