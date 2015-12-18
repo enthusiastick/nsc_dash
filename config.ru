@@ -21,7 +21,7 @@ configure do
   use Rack::Session::Cookie, secret: ENV['SECRET_KEY_BASE']
 
   use OmniAuth::Builder do
-    provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET']
+    provider :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {:client_options => {:ssl => {:verify => false}}}
   end
 
   get '/auth/google_oauth2/callback' do
