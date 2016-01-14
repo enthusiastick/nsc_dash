@@ -32,42 +32,70 @@ SCHEDULER.every '1m', :first_in => 0 do
     loss[pro] = { label: pro.name, value: "#{loss_percentage}%"}
   end
 
-  # puts loss.values
   send_event('employee_loss', {items: loss.values})
 
   dates1 = client.query("SELECT Name, (SELECT Name, Birthdate, Date_Of_Hire__c FROM Contacts WHERE Status__c != 'Inactive') FROM Account WHERE Id = '#{ENV['FRANCHISEE_1_ID']}'")
   dates2 = client.query("SELECT Name, (SELECT Name, Birthdate, Date_Of_Hire__c FROM Contacts WHERE Status__c != 'Inactive') FROM Account WHERE Id = '#{ENV['FRANCHISEE_2_ID']}'")
 
-  today = Date.today
+  # Change this back when QA is complete
+  today = Date.today - 31
 
   special_days = Hash.new
 
   dates1.first.Contacts.each do |contact|
     unless contact.Birthdate.nil?
-      if Date.parse(contact.Birthdate).month == today.month
-        special_days[contact] = { label: "#{contact.Name} Birthday", value: Date.parse(contact.Birthdate).strftime("%A, %B %-d"), order: Date.parse(contact.Birthdate) }
+      birthday = Date.parse(contact.Birthdate)
+      if birthday.month == today.month
+        special_days[contact] = { label: "#{contact.Name} Birthday", value: birthday.strftime("%A, %B %-d"), order: birthday }
       end
     end
     unless contact.Date_Of_Hire__c.nil?
-      if Date.parse(contact.Date_Of_Hire__c).month == today.month
-        special_days[contact] = { label: "#{contact.Name} Work Anniversary", value: Date.parse(contact.Date_Of_Hire__c).strftime("%A, %B %-d"), order: Date.parse(contact.Date_Of_Hire__c) }
+      hiredate = Date.parse(contact.Date_Of_Hire__c)
+      if hiredate.month == today.month && hiredate.year != today.year
+        special_days[contact] = { label: "#{contact.Name} #{today.year - hiredate.year}-Year Work Anniversary", value: hiredate.strftime("%A, %B %-d"), order: hiredate }
       end
     end
   end
 
   dates2.first.Contacts.each do |contact|
     unless contact.Birthdate.nil?
-      if Date.parse(contact.Birthdate).month == today.month
-        special_days[contact] = { label: "#{contact.Name} Birthday", value: Date.parse(contact.Birthdate).strftime("%A, %B %-d"), order: Date.parse(contact.Birthdate) }
+      birthday = Date.parse(contact.Birthdate)
+      if birthday.month == today.month
+        special_days[contact] = { label: "#{contact.Name} Birthday", value: birthday.strftime("%A, %B %-d"), order: birthday }
       end
     end
     unless contact.Date_Of_Hire__c.nil?
-      if Date.parse(contact.Date_Of_Hire__c).month == today.month
-        special_days[contact] = { label: "#{contact.Name} Work Anniversary", value: Date.parse(contact.Date_Of_Hire__c).strftime("%A, %B %-d"), order: Date.parse(contact.Date_Of_Hire__c) }
+      hiredate = Date.parse(contact.Date_Of_Hire__c)
+      if hiredate.month == today.month && hiredate.year != today.year
+        special_days[contact] = { label: "#{contact.Name} #{(today.year - hiredate.year).to_s}-Year Work Anniversary", value: hiredate.strftime("%A, %B %-d"), order: hiredate }
       end
     end
   end
 
   send_event('special_days', {items: special_days.values.sort_by{ |entry| entry[:order] }})
+
+  feedbacks_array = Array.new
+
+  feedbacks1 = client.query("SELECT Name, (SELECT Is_there_anything_you_want_different__c, Date_of_Service__c, Feedback_Pro_Contacts__c, How_Likely_to_Recommend_Numeric__c, First_Name__c, Last_Name__c FROM Service_Feedback__r WHERE How_Likely_to_Recommend_Numeric__c >= 9 AND Date_of_Service__c = LAST_N_DAYS:60 ) FROM Account WHERE Id = '#{ENV['FRANCHISEE_1_ID']}'")
+
+  feedbacks2 = client.query("SELECT Name, (SELECT Is_there_anything_you_want_different__c, Date_of_Service__c, Feedback_Pro_Contacts__c, How_Likely_to_Recommend_Numeric__c, First_Name__c, Last_Name__c FROM Service_Feedback__r WHERE How_Likely_to_Recommend_Numeric__c >= 9 AND Date_of_Service__c = LAST_N_DAYS:60 ) FROM Account WHERE Id = '#{ENV['FRANCHISEE_2_ID']}'")
+
+  unless feedbacks1.first.Service_Feedback__r.nil?
+    feedbacks1.first.Service_Feedback__r.each do |feedback|
+      unless feedback.Is_there_anything_you_want_different__c.nil?
+        feedbacks_array << { name: feedback.Feedback_Pro_Contacts__c, body: "[#{feedback.How_Likely_to_Recommend_Numeric__c.to_i}] #{feedback.Is_there_anything_you_want_different__c} - #{feedback.First_Name__c} #{feedback.Last_Name__c}", avatar: nil }
+      end
+    end
+  end
+
+  unless feedbacks2.first.Service_Feedback__r.nil?
+    feedbacks2.first.Service_Feedback__r.each do |feedback|
+      unless feedback.Is_there_anything_you_want_different__c.nil?
+        feedbacks_array << { name: feedback.Feedback_Pro_Contacts__c, body: "[#{feedback.How_Likely_to_Recommend_Numeric__c.to_i}] #{feedback.Is_there_anything_you_want_different__c} - #{feedback.First_Name__c} #{feedback.Last_Name__c}", avatar: nil }
+      end
+    end
+  end
+
+  send_event('pro_feedback', comments: feedbacks_array)
 
 end
