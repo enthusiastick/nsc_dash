@@ -98,4 +98,9 @@ SCHEDULER.every '1m', :first_in => 0 do
 
   send_event('pro_feedback', comments: feedbacks_array)
 
+  message = client.query("SELECT Franchisee_Dashboard_Message__c FROM Account WHERE Id = '#{ENV['FRANCHISEE_PARENT_ID']}'")
+
+  send_event('message', text: message.first.Franchisee_Dashboard_Message__c)
+
+
 end
