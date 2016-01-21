@@ -83,7 +83,7 @@ SCHEDULER.every '1m', :first_in => 0 do
   unless feedbacks1.first.Service_Feedback__r.nil?
     feedbacks1.first.Service_Feedback__r.each do |feedback|
       unless feedback.Is_there_anything_you_want_different__c.nil?
-        feedbacks_array << { name: feedback.Feedback_Pro_Contacts__c, body: "[#{feedback.How_Likely_to_Recommend_Numeric__c.to_i}] #{feedback.Is_there_anything_you_want_different__c} - #{feedback.First_Name__c} #{feedback.Last_Name__c}", avatar: nil }
+        feedbacks_array << { name: feedback.Feedback_Pro_Contacts__c, body: "[#{feedback.How_Likely_to_Recommend_Numeric__c.to_i}] #{feedback.Is_there_anything_you_want_different__c}", avatar: nil, sauce: "#{feedback.First_Name__c} #{feedback.Last_Name__c}" }
       end
     end
   end
@@ -91,7 +91,7 @@ SCHEDULER.every '1m', :first_in => 0 do
   unless feedbacks2.first.Service_Feedback__r.nil?
     feedbacks2.first.Service_Feedback__r.each do |feedback|
       unless feedback.Is_there_anything_you_want_different__c.nil?
-        feedbacks_array << { name: feedback.Feedback_Pro_Contacts__c, body: "[#{feedback.How_Likely_to_Recommend_Numeric__c.to_i}] #{feedback.Is_there_anything_you_want_different__c} - #{feedback.First_Name__c} #{feedback.Last_Name__c}", avatar: nil }
+        feedbacks_array << { name: feedback.Feedback_Pro_Contacts__c, body: "[#{feedback.How_Likely_to_Recommend_Numeric__c.to_i}] #{feedback.Is_there_anything_you_want_different__c}", avatar: nil, sauce: "#{feedback.First_Name__c} #{feedback.Last_Name__c}" }
       end
     end
   end
