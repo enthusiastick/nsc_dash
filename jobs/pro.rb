@@ -37,8 +37,7 @@ SCHEDULER.every '1m', :first_in => 0 do
   dates1 = client.query("SELECT Name, (SELECT Name, Birthdate, Date_Of_Hire__c FROM Contacts WHERE Status__c != 'Inactive') FROM Account WHERE Id = '#{ENV['FRANCHISEE_1_ID']}'")
   dates2 = client.query("SELECT Name, (SELECT Name, Birthdate, Date_Of_Hire__c FROM Contacts WHERE Status__c != 'Inactive') FROM Account WHERE Id = '#{ENV['FRANCHISEE_2_ID']}'")
 
-  # Change this back when QA is complete
-  today = Date.today - 31
+  today = Date.today
 
   special_days = Hash.new
 
