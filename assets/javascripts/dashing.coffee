@@ -3,13 +3,6 @@
 #= require batman
 #= require batman.jquery
 
-String::commafy = ->
-  @replace /(^|[^\w.])(\d{4,})/g, ($0, $1, $2) ->
-    $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,')
-
-Number::commafy = ->
-  String(this).commafy()
-
 Batman.Filters.prettyNumber = (num) ->
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") unless isNaN(num)
 
@@ -26,7 +19,7 @@ Batman.Filters.shortenedNumber = (num) ->
   else if num >= 1000000
     (num / 1000000).toFixed(1) + 'M'
   else if num >= 1000
-    num.commafy()
+    (num / 1000).toFixed(1) + 'K'
   else
     num
 
